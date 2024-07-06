@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Details from "./Details";
+import Card from "./Card";
 
 const Pokemons = () => {
   const [data, setData] = useState([]);
+  const [rangeValue, setRangeValue] = useState(36);
+
   useEffect(() => {
     axios
       .get("https://tyradex.vercel.app/api/v1/pokemon")
@@ -13,11 +15,17 @@ const Pokemons = () => {
   return (
     <div className="pokemons">
       <ul className="radio-container">
-        <input type="range" min="1" max="1025" />
+        <input
+          type="range"
+          min="1"
+          max="1025"
+          defaultValue={rangeValue}
+          onChange={(e) => setRangeValue(e.target.value)}
+        />
       </ul>
       <ul>
-        {data.map((pokemon) => (
-          <Details key={pokemon.pokedex_id} pokemon={pokemon} />
+        {data.slice(0, rangeValue).map((pokemon) => (
+          <Card key={pokemon.pokedex_id} pokemon={pokemon} />
         ))}
       </ul>
     </div>
